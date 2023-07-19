@@ -12,7 +12,7 @@
   <!-- overlayScrollbars -->
   <link rel="stylesheet" href="{{ url('admin/plugins/overlayScrollbars/css/OverlayScrollbars.min.css') }}">
   <!-- Theme style -->
-  <link rel="stylesheet" href="{{ url('admin/dist/css/adminlte.min.css') }}">
+  <link rel="stylesheet" href="{{ url('admin/css/adminlte.min.css') }}">
 </head>
 <body class="hold-transition dark-mode sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed">
 <div class="wrapper">
@@ -24,7 +24,8 @@
 
   @include('admin.layout.header')
   @include('admin.layout.sidebar')
-  @yield('')
+  
+  @yield('content')
 
   <!-- Control Sidebar -->
   <aside class="control-sidebar control-sidebar-dark">
