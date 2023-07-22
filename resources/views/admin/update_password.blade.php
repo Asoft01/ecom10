@@ -34,7 +34,8 @@
                 </div>
                 <!-- /.card-header -->
                 <!-- form start -->
-                <form>
+                <form method="post" action="{{ url('admin/update-password')}}">
+                    @csrf
                   <div class="card-body">
                     <div class="form-group">
                       <label for="admin_email">Email address</label>
