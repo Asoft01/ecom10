@@ -6,10 +6,13 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Auth;
 use Validator;
+use Hash;
+use App\Models\Admin;
 
 class AdminController extends Controller
 {
     public function dashboard(){
+        echo "<pre>"; print_r(Auth::guard('admin')->user()); die;
         return view('admin.dashboard');
     }
 
@@ -44,7 +47,23 @@ class AdminController extends Controller
         return redirect('admin/login');
     }
 
-    public function updatePassword(){
+    public function updatePassword(Request $request){
+        if($request->isMethod('post')){
+            $data = $request->all(); 
+            // Check if Current Password is correct 
+            if(Hash::check($data['current_pwd'], Auth::guard('admin')->user()->password)){
+                // Check if new password and confirm password are matching 
+                if($data['new_pwd'] == $data['confirm_pwd']){
+                    // Update New Password
+                    Admin::where('id', Auth::guard('admin')->user()->id)->update(['password' => bcrypt($data['new_pwd'])]);
+                    return redirect()->back()->with('success_message', 'Password has been updated successfully!'); 
+                }else{
+                    return redirect()->back()->with('error_message', 'New Password and Retype Password does not match'); 
+                }
+            }else{  
+                return redirect()->back()->with('error_message', 'Your Current Password is Incorrect'); 
+            }
+        }
         return view('admin.update_password');
     }
 

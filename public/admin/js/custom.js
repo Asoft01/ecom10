@@ -4,8 +4,11 @@ $(document).ready(function(){
         var current_pwd = $("#current_pwd").val();
         // alert(current_pwd);
         $.ajax({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }, 
             type: 'post', 
-            url: 'admin/check-current-password', 
+            url: '/admin/check-current-password', 
             data : { current_pwd : current_pwd }, 
             success: function(){
                 if(resp == "false"){
