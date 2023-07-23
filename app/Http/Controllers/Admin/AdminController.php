@@ -81,16 +81,17 @@ class AdminController extends Controller
             $data= $request->all(); 
             // echo "<pre>"; print_r($data); die;
             $rules = [
-                'admin_name' => 'required|max:255',
-                'admin_mobile' => 'required|numeric|max:10|min:10',  
+                'admin_name' => 'required|regex:/^[\pL\s-]+$/u|max:255',
+                'admin_mobile' => 'required|numeric|digits:10',  
             ];
 
             $customMessages = [
                 'admin_name.required' => "Name is required", 
+                'admin_name.regex' => "Name is required", 
+                'admin_name.max' => 'Valid Name is required', 
                 'admin_mobile.required' => 'Mobile is required', 
                 'admin_mobile.numeric' => 'Valid Mobile is required', 
-                'admin_mobile.min' => 'Valid Mobile is required', 
-                'admin_mobile.max' => 'Valid Mobile is required', 
+                'admin_mobile.digits' => 'Valid Mobile is required', 
                 
             ];
 
