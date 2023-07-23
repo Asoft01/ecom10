@@ -75,4 +75,9 @@ class AdminController extends Controller
             return false;
         }
     }
+
+    public function updateAdminDetails(Request $request){
+        // if()
+        return view('admin.update_details');
+    }
 }
