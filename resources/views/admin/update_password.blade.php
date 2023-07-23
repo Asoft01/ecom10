@@ -44,6 +44,7 @@
                       <div class="form-group">
                         <label for="current_pwd">Current Password</label>
                         <input type="password" class="form-control" id="current_pwd" name="current_pwd" placeholder="Current Password">
+                        <span id="verifyCurrentPwd"></span>
                       </div>
                       <div class="form-group">
                         <label for="new_pwd">New Password</label>

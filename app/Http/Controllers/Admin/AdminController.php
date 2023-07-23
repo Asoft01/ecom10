@@ -47,4 +47,13 @@ class AdminController extends Controller
     public function updatePassword(){
         return view('admin.update_password');
     }
+
+    public function checkCurrentPassword(Request $request){
+        $data = $request->all(); 
+        if(Hash::check($data['current_pwd'], Auth::guard('admin')->user()->password)){
+            return "true";
+        }else{
+            return false;
+        }
+    }
 }
