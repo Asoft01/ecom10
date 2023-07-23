@@ -12,7 +12,7 @@ use App\Models\Admin;
 class AdminController extends Controller
 {
     public function dashboard(){
-        echo "<pre>"; print_r(Auth::guard('admin')->user()); die;
+        // echo "<pre>"; print_r(Auth::guard('admin')->user()); die;
         return view('admin.dashboard');
     }
 
@@ -76,8 +76,30 @@ class AdminController extends Controller
         }
     }
 
-    public function updateAdminDetails(Request $request){
-        // if()
+    public function updateDetails(Request $request){
+        if($request->isMethod('post')){
+            $data= $request->all(); 
+            // echo "<pre>"; print_r($data); die;
+            $rules = [
+                'admin_name' => 'required|max:255',
+                'admin_mobile' => 'required|numeric|max:10|min:10',  
+            ];
+
+            $customMessages = [
+                'admin_name.required' => "Name is required", 
+                'admin_mobile.required' => 'Mobile is required', 
+                'admin_mobile.numeric' => 'Valid Mobile is required', 
+                'admin_mobile.min' => 'Valid Mobile is required', 
+                'admin_mobile.max' => 'Valid Mobile is required', 
+                
+            ];
+
+            $this->validate($request, $rules, $customMessages);
+
+            // Update Admin Details 
+            Admin::where('email', Auth::guard('admin')->user()->email)->update(['name' => $data['admin_name'], 'mobile' => $data['admin_mobile']]);
+            return redirect()->back()->with('success_message', 'Admin Details has been updated successfully!'); 
+        }
         return view('admin.update_details');
     }
 }

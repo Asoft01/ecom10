@@ -43,7 +43,7 @@
                 @endif
                 @if(Session::has('success_message'))
                     <div class="alert alert-success alert-dismissible fade show" role="alert">
-                        <strong>Error:</strong> {{ Session::get('success_message') }}
+                        <strong>Success:</strong> {{ Session::get('success_message') }}
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -59,12 +59,12 @@
                     </div>
                       <div class="form-group">
                         <label for="admin_name">Name</label>
-                        <input type="text" class="form-control" id="admin_name" name="admin_name" placeholder="Name">
+                        <input type="text" class="form-control" id="admin_name" name="admin_name" placeholder="Name" value="{{ auth()->guard('admin')->user()->name}}">
                         <span id="verifyCurrentPwd"></span>
                       </div>
                       <div class="form-group">
-                        <label for="mobile">Mobile</label>
-                        <input type="text" class="form-control" id="mobile" name="mobile" placeholder="Mobile">
+                        <label for="admin_mobile">Mobile</label>
+                        <input type="text" class="form-control" id="admin_mobile" name="admin_mobile" placeholder="Mobile" value="{{ auth()->guard('admin')->user()->mobile}}">
                       </div>
                   </div>
                   <!-- /.card-body -->
