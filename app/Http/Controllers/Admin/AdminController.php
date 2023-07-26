@@ -85,6 +85,7 @@ class AdminController extends Controller
                 'admin_mobile' => 'required|numeric|digits:10',  
             ];
 
+            // Validation the Admins
             $customMessages = [
                 'admin_name.required' => "Name is required", 
                 'admin_name.regex' => "Name is required", 
