@@ -80,6 +80,7 @@ class AdminController extends Controller
         if($request->isMethod('post')){
             $data= $request->all(); 
             // echo "<pre>"; print_r($data); die;
+            // dd(Auth::guard('admin')->user()->email); die;
             $rules = [
                 'admin_name' => 'required|regex:/^[\pL\s-]+$/u|max:255',
                 'admin_mobile' => 'required|numeric|digits:10',  
@@ -93,7 +94,8 @@ class AdminController extends Controller
                 'admin_name.max' => 'Valid Name is required', 
                 'admin_mobile.required' => 'Mobile is required', 
                 'admin_mobile.numeric' => 'Valid Mobile is required', 
-                'admin_image.digits' => 'Valid Image is required', 
+                'admin_mobile.digits' => 'Valid Mobile is required', 
+                'admin_image.image' => 'Valid Image is required', 
                 
             ];
 

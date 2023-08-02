@@ -30,7 +30,7 @@
               <!-- general form elements -->
               <div class="card card-primary">
                 <div class="card-header">
-                  <h3 class="card-title">Update Admin Password</h3>
+                  <h3 class="card-title">Update Admin Details</h3>
                 </div>
                 <!-- /.card-header -->
                 @if(Session::has('error_message'))
@@ -55,7 +55,7 @@
                   <div class="card-body">
                     <div class="form-group">
                       <label for="admin_email">Email address</label>
-                      <input type="email" class="form-control" id="admin_email" value="{{ auth()->guard('admin')->user()->email}}" readonly="" style="background-color:#666;">
+                      <input type="email" class="form-control" id="admin_email" name="admin_email" value="{{ auth()->guard('admin')->user()->email}}" readonly="" style="background-color:#666;">
                     </div>
                       <div class="form-group">
                         <label for="admin_name">Name</label>
@@ -66,10 +66,10 @@
                         <label for="admin_mobile">Mobile</label>
                         <input type="text" class="form-control" id="admin_mobile" name="admin_mobile" placeholder="Mobile" value="{{ auth()->guard('admin')->user()->mobile}}">
                       </div>
-                      <div class="form-group">
+                      {{-- <div class="form-group">
                         <label for="admin_image">Image</label>
                         <input type="file" class="form-control" id="admin_image" name="admin_image" placeholder="Mobile" value="{{ auth()->guard('admin')->user()->mobile}}">
-                      </div>
+                      </div> --}}
                   </div>
                   <!-- /.card-body -->
   
