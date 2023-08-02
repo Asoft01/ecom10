@@ -68,7 +68,7 @@
                       </div>
                       <div class="form-group">
                         <label for="admin_image">Image</label>
-                        <input type="text" class="form-control" id="admin_image" name="admin_image" placeholder="Mobile" value="{{ auth()->guard('admin')->user()->mobile}}">
+                        <input type="file" class="form-control" id="admin_image" name="admin_image" placeholder="Mobile" value="{{ auth()->guard('admin')->user()->mobile}}">
                       </div>
                   </div>
                   <!-- /.card-body -->
