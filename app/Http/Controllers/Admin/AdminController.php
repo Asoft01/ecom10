@@ -83,6 +83,7 @@ class AdminController extends Controller
             $rules = [
                 'admin_name' => 'required|regex:/^[\pL\s-]+$/u|max:255',
                 'admin_mobile' => 'required|numeric|digits:10',  
+                'admin_image' => 'image',  
             ];
 
             // Validation the Admins
@@ -92,14 +93,26 @@ class AdminController extends Controller
                 'admin_name.max' => 'Valid Name is required', 
                 'admin_mobile.required' => 'Mobile is required', 
                 'admin_mobile.numeric' => 'Valid Mobile is required', 
-                'admin_mobile.digits' => 'Valid Mobile is required', 
+                'admin_image.digits' => 'Valid Image is required', 
                 
             ];
 
             $this->validate($request, $rules, $customMessages);
+            // Upload Admin Image 
+            if($request->hasFile('admin_image')){
+                $image_tmp = $request->file('admin_image'); 
+                if($image_tmp->isValid()){
+                    // Get Image Extension
+                    $extension = $image_tmp->getClientOriginalExtension(); 
+                    // Generate New Image 
+                    $imageName = rand(111, 99999).''.$extension; 
+                    $image_path = 'admin/images/photos'.$imageName;
+                    Image::make($image_path)->save($image_path); 
+                }
+            }
 
             // Update Admin Details 
-            Admin::where('email', Auth::guard('admin')->user()->email)->update(['name' => $data['admin_name'], 'mobile' => $data['admin_mobile']]);
+            Admin::where('email', Auth::guard('admin')->user()->email)->update(['name' => $data['admin_name'], 'mobile' => $data['admin_mobile'], 'image' => $imageName]);
             return redirect()->back()->with('success_message', 'Admin Details has been updated successfully!'); 
         }
         return view('admin.update_details');
