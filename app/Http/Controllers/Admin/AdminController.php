@@ -9,10 +9,12 @@ use Validator;
 use Hash;
 use App\Models\Admin;
 use Image;
+use Session; 
 
 class AdminController extends Controller
 {
     public function dashboard(){
+        Session::put('page', 'dashboard');
         // echo "<pre>"; print_r(Auth::guard('admin')->user()); die;
         return view('admin.dashboard');
     }
