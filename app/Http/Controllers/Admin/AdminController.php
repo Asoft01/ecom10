@@ -51,6 +51,7 @@ class AdminController extends Controller
     }
 
     public function updatePassword(Request $request){
+        Session::put('page', 'update-password');
         if($request->isMethod('post')){
             $data = $request->all(); 
             // Check if Current Password is correct 
@@ -80,6 +81,7 @@ class AdminController extends Controller
     }
 
     public function updateDetails(Request $request){
+        Session::put('page', 'update-details');
         if($request->isMethod('post')){
             $data= $request->all(); 
             // echo "<pre>"; print_r($data); die;
