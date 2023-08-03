@@ -76,8 +76,12 @@
                         <input type="text" class="form-control" id="admin_mobile" name="admin_mobile" placeholder="Mobile" value="{{ auth()->guard('admin')->user()->mobile}}">
                       </div>
                       <div class="form-group">
-                        <label for="admin_image">Image</label>
+                        <label for="admin_image">Photo</label>
                         <input type="file" class="form-control" id="admin_image" name="admin_image" placeholder="Mobile" value="{{ auth()->guard('admin')->user()->mobile}}">
+                        @if(!empty(Auth::guard('admin')->user()->image))
+                          <a target="_blank" href="{{ url('admin/images/photos/'.Auth::guard('admin')->user()->image) }}">View Photo</a>
+                          <input type="hidden" name="current_image" value="{{ Auth::guard('admin')->user()->image }}">
+                        @endif 
                       </div>
                   </div>
                   <!-- /.card-body -->

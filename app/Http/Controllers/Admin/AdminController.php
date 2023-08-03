@@ -112,6 +112,10 @@ class AdminController extends Controller
                     $image_path = 'admin/images/photos/'.$imageName;
                     Image::make($image_tmp)->save($image_path); 
                 }
+            }else if(!empty($data['current_image'])){
+                $imageName = $data['current_image'];
+            }else{
+                $imageName = "";
             }
 
             // Update Admin Details 
