@@ -8,6 +8,7 @@ use Auth;
 use Validator;
 use Hash;
 use App\Models\Admin;
+use Image;
 
 class AdminController extends Controller
 {
@@ -82,15 +83,15 @@ class AdminController extends Controller
             // echo "<pre>"; print_r($data); die;
             // dd(Auth::guard('admin')->user()->email); die;
             $rules = [
-                'admin_name' => 'required|regex:/^[\pL\s-]+$/u|max:255',
+                'admin_name' => 'required|regex:/^[\pL\s\-]+$/u|max:255',
                 'admin_mobile' => 'required|numeric|digits:10',  
-                'admin_image' => 'image',  
+                // 'admin_image' => 'image',  
             ];
 
             // Validation the Admins
             $customMessages = [
                 'admin_name.required' => "Name is required", 
-                'admin_name.regex' => "Name is required", 
+                'admin_name.regex' => "Valid Name is required", 
                 'admin_name.max' => 'Valid Name is required', 
                 'admin_mobile.required' => 'Mobile is required', 
                 'admin_mobile.numeric' => 'Valid Mobile is required', 
@@ -107,9 +108,9 @@ class AdminController extends Controller
                     // Get Image Extension
                     $extension = $image_tmp->getClientOriginalExtension(); 
                     // Generate New Image 
-                    $imageName = rand(111, 99999).''.$extension; 
-                    $image_path = 'admin/images/photos'.$imageName;
-                    Image::make($image_path)->save($image_path); 
+                    $imageName = rand(111,99999).'.'.$extension; 
+                    $image_path = 'admin/images/photos/'.$imageName;
+                    Image::make($image_tmp)->save($image_path); 
                 }
             }
 
