@@ -1,1 +1,2 @@
 composer require intervention/image
+php artisan make:controller Admin\\CmsController --resource --model=CmsPage
