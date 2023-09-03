@@ -32,7 +32,7 @@ $(document).ready(function(){
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }, 
             type: 'post', 
-            url: '/admin/update-cms-pages-satus',
+            url: '/admin/update-cms-page-status',
             data: {status: status, page_id: page_id}, 
             success: function(resp){
                 
