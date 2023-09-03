@@ -25,5 +25,20 @@ $(document).ready(function(){
     // Update CMS Page Status 
     $(document).on("click", ".updateCmsPageStatus", function(){
         var status = $(this).children("i").attr("status");
+        var page_id = $(this).attr("page_id"); 
+        alert(page_id); 
+        ajax({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }, 
+            type: 'post', 
+            url: '/admin/update-cms-pages-satus',
+            data: {status: status, page_id: page_id}, 
+            success: function(resp){
+                
+            }, error: function(){
+                alert("Error");
+            }
+        })
     });
 });

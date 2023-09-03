@@ -55,7 +55,10 @@ class CmsController extends Controller
      */
     public function update(Request $request, CmsPage $cmsPage)
     {
-        //
+        if($request->ajax()){
+            $data= $request->all(); 
+            echo "<pre>"; print_r($data); die; 
+        }
     }
 
     /**
