@@ -52,9 +52,9 @@
                             <td>{{ $page['created_at']}}</td>
                             <td>
                               @if($page['status'] == 1)
-                                <i class="fas fa-toggle-on"></i>
+                                <a class="updateCmsPageStatus" id="page-{{ $page['id'] }}" page_id="{{ $page['id'] }}" href="javascript:void(0)"></a><i class="fas fa-toggle-on" status="Active"></i>
                                 @else 
-                                <i class="fas fa-toggle-off"></i>
+                                <a class="updateCmsPageStatus" id="page-{{ $page['id'] }}" page_id="{{ $page['id'] }}" style="color:grey" href="javascript:void(0)"></a><i class="fas fa-toggle-off" status="Inactive"></i>
                               @endif 
                             </td>
                             </tr>
