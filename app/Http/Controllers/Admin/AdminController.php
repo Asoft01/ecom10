@@ -76,7 +76,7 @@ class AdminController extends Controller
         if(Hash::check($data['current_pwd'], Auth::guard('admin')->user()->password)){
             return "true";
         }else{
-            return false;
+            return "false";
         }
     }
 

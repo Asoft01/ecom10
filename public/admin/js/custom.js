@@ -10,7 +10,7 @@ $(document).ready(function(){
             type: 'post', 
             url: '/admin/check-current-password', 
             data : { current_pwd : current_pwd }, 
-            success: function(){
+            success: function(resp){
                 if(resp == "false"){
                     $("#verifyCurrentPwd").html("Current Password is incorrect!");
                 }else if(resp == "true"){
@@ -24,10 +24,11 @@ $(document).ready(function(){
 
     // Update CMS Page Status 
     $(document).on("click", ".updateCmsPageStatus", function(){
+        // alert("hello"); return false;
         var status = $(this).children("i").attr("status");
         var page_id = $(this).attr("page_id"); 
-        alert(page_id); 
-        ajax({
+        // alert(page_id); 
+        $.ajax({
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }, 
