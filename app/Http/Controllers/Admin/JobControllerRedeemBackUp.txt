@@ -1,0 +1,172 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\ApplyJob;
+use App\Models\Job;
+use App\Models\UserJob;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+
+class JobController extends Controller
+{
+    public function listJob()
+    {
+        $smes = UserJob::get();
+        return response()->json([
+            'success' => true,
+            'message' => 'Job Lists',
+            'data' => $smes
+        ], 200);
+    }
+
+    public function detailJob(Request $request, $sme_id)
+    {
+        $smeDetail = DB::table('user_jobs')->where('id', $sme_id)->first();
+        return response()->json([
+            'success' => true,
+            'message' => 'Detail of Jobs',
+            'data' => $smeDetail
+        ]);
+    }
+
+    public function createJob(Request $request)
+    {
+        $user = auth()->user();
+        $bizData = $request->input();
+        $validationBiz = validator($request->all(), [
+            // set up your biz
+            // 'user_id'=>['required', 'unique:business_profiles'],
+            'title' => 'required|max:191',
+            'company_name' => 'required|max:191',
+            'company_website' => 'required|max:191',
+            'short_description' => 'required|max:191',
+            'job_image' => 'required|mimes:png,jpeg,jpg|max:1024',
+            'job_image_url' => 'nullable|max:1024',
+            'address' => 'required|max:191',
+            'state' => 'required|max:191',
+            'category' => 'required|max:191',
+            'application_link' => 'required|max:191'
+        ]);
+
+        if ($validationBiz->fails()) {
+            return response()->json([
+                'message' => $validationBiz->errors()
+            ], 422);
+        } else {
+            // $job_check = BusinessProfile::where(['user_id'=> $user->id])->count();
+            $job_check = UserJob::where(['user_id' => $user->id, 'company_name' => $request->company_name])->count();
+            if ($job_check > 0) {
+                return response()->json([
+                    'status' => true,
+                    'message' => "This Job has already been posted"
+                ], 200);
+            } else {
+                if ($request->hasFile('job_image')) {
+                    // dd("hello"); die;
+                    $job_name_tmp = $request->file('job_image');
+                    // dd($biz_logo_name);
+                    // dd($job_name_tmp); die;
+                    if ($job_name_tmp->isValid()) {
+                        $job_image_name = $job_name_tmp->getClientOriginalName();
+                        // dd($biz_Logo_Name); die;
+
+                        $image_name = time() . '-' . $job_image_name;
+
+                        // dd($image_name); die;
+
+                        $image_size = $request->file('job_image')->getSize();
+
+                        $request->job_image->move(public_path('/uploads/job_images'), $image_name);
+
+                        // dd($image_size); die;
+                        // $base_encode = file_get_contents($request->file('job_image_name'));
+                        $file_biz_logo = base64_encode($request->biz_logo_name);
+
+                        $job_url = $request->file('job_image_url');
+                        // dd($job_url); die;
+                        $job_image_upload = cloudinary()->upload($job_url->getRealPath(), [
+                            'folder' => 'jobs',
+                            'resource_type' => 'auto',
+                            'transformation' => [
+                                'quality' => 'auto',
+                                'fetch_format' => 'auto'
+                            ]
+                        ]);
+
+                        $job_image_url = $job_image_upload->getSecurePath();
+                        $photo_id = $job_image_upload->getPublicId();
+
+                        // User Jobs
+                        $job_profile = new UserJob();
+
+                        $job_profile->user_id =          $user->id;
+                        $job_profile->title =             $request->title;
+                        $job_profile->company_name =      $request->company_name;
+                        $job_profile->company_website =   $request->company_website;
+                        $job_profile->short_description = $request->short_description;
+                        $job_profile->job_image_url =     $job_image_url;
+                        $job_profile->address =           $request->address;
+                        $job_profile->state =             $request->state;
+                        $job_profile->category =          $request->category;
+                        $job_profile->application_link =  $request->application_link;
+
+                        $job_profile->job_image =         $image_name;
+                        $job_profile->job_image_size =    $image_size;
+
+                        $job_profile->save();
+
+                        return response()->json([
+                            'success' => true,
+                            'message' => 'Job Saved Successfully',
+                            'data' => $job_profile
+                        ], 200);
+                    }
+                }
+            }
+        }
+    }
+
+    public function applyJob(Request $request, $job_id)
+    {
+        $user_id = auth()->user()->id;
+        $job_details = UserJob::select('id', 'application_link')->where(['id' => $job_id])->first();
+        $check_if_applied = ApplyJob::where(['job_id' => $job_id, 'user_id' => $user_id, 'is_apply' => 1])->count();
+        // dd($user_id); die;
+        if ($check_if_applied > 0) {
+            return response()->json([
+                'status' => false,
+                'message' => 'You already applied for this job'
+            ], 409);
+        } else {
+            if ($job_details) {
+                $apply_job = new ApplyJob();
+                $apply_job->user_id = $user_id;
+                $apply_job->job_id =  $job_id;
+                $apply_job->is_apply = 1;
+                $apply_job->application_link = $job_details->application_link;
+                $apply_job->save();
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Thanks for applying for this job',
+                    'data' => $apply_job
+                ], 200);
+            } else {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Application to this job not found',
+                    'data' => $job_details
+                ], 200);
+            }
+        }
+    }
+
+    public function countJob(Request $request){
+        $count_job = UserJob::count(); 
+        return response()->json([
+            'success' => true, 
+            'message' => 'The total number of jobs', 
+            'data' => $count_job
+        ], 200);
+    }
+}

@@ -50,7 +50,13 @@
                             <td>{{ $page['title']}}</td>
                             <td>{{ $page['url']}}</td>
                             <td>{{ $page['created_at']}}</td>
-                            <td></td>
+                            <td>
+                              @if($page['status'] == 1)
+                                <i class="fas fa-toggle-on"></i>
+                                @else 
+                                <i class="fas fa-toggle-off"></i>
+                              @endif 
+                            </td>
                             </tr>
                         @endforeach
                     </tbody>
