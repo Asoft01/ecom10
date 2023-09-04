@@ -55,8 +55,8 @@
                                 <a class="updateCmsPageStatus" id="page-{{ $page['id'] }}" page_id="{{ $page['id'] }}" href="javascript:void(0)">
                                   <i class="fas fa-toggle-on" status="Active"></i>
                                 </a>
-                                @else 
-                                <a class="updateCmsPageStatus" id="page-{{ $page['id'] }}" page_id="{{ $page['id'] }}" style="color:grey" href="javascript:void(0)">
+                              @else 
+                                  <a class="updateCmsPageStatus" id="page-{{ $page['id'] }}" page_id="{{ $page['id'] }}" style="color:grey" href="javascript:void(0)">
                                   <i class="fas fa-toggle-off" status="Inactive"></i>
                                 </a>
                               @endif 
